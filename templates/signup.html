@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% extends 'base.html' %}
+{% block content %}
+<h2>Авторизоваться</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Sign up</button>
+</form>
+{% endblock content %}
+    </title>
+</head>
+<body>
+
+</body>
+</html>

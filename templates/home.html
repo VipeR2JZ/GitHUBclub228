@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% extends 'base.html' %}
+{% block content %}
+  {% for post in object_list %}
+  <div class="post-entry">
+    <h2><a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a></h2>
+    <p>{{ post.body }}</p>
+  </div>
+    <form action="{% url 'search_results' %}" method="get">
+  <input name="q" type="text" placeholder="Search...">
+</form>
+  {% endfor %}
+{% endblock content %}
+    <meta charset="UTF-8">
+    <title>
+    </title>
+</head>
+<body>
+
+</body>
+</html>

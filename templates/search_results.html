@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <h1>Ваши города</h1>
+
+<ul>
+  {% for city in object_list %}
+    <li>
+      {{ city.name }}, {{ city.state }}
+    </li>
+  {% endfor %}
+</ul>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+</html>
