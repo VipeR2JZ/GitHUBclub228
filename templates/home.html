@@ -1,23 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% extends 'base.html' %}
-{% block content %}
-  {% for post in object_list %}
-  <div class="post-entry">
-    <h2><a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a></h2>
-    <p>{{ post.body }}</p>
-  </div>
-    <form action="{% url 'search_results' %}" method="get">
-  <input name="q" type="text" placeholder="Search...">
-</form>
-  {% endfor %}
-{% endblock content %}
-    <meta charset="UTF-8">
-    <title>
-    </title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block content %}
+  <div class="container">
+    <form action="{% url 'search_results' %}" method="get">
+      <div class="form-group">
+        <label for="search">Поиск</label>
+        <input class="form-control" type="text" name="q" id="search" placeholder="Введите запрос">
+      </div>
+      <button type="submit" class="btn btn-primary">Поиск</button>
+    </form>
+    <br>
+    <div class="row">
+      {% for post in object_list %}
+        <div class="col-md-4">
+          <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">{{ post.title }}</h5>
+              <p class="card-text">{{ post.body }}</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <small class="text-muted">{{ post.created_on }}</small>
+                <a href="{% url 'post_detail' post.pk %}" class="btn btn-sm btn-outline-secondary">Подробнее</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <p>Нет постов</p>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}
