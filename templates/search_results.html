@@ -4,9 +4,9 @@
   <h1>Ваши города</h1>
 
 <ul>
-  {% for city in object_list %}
+  {% for blog in object_list %}
     <li>
-      {{ city.name }}, {{ city.state }}
+      {{ blog.title }}, {{ blog.author }}
     </li>
   {% endfor %}
 </ul>

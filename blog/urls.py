@@ -8,9 +8,13 @@ from .views import (
     BlogDeleteView,
     edit_profile,
     profile,
+    HomePageView,
+    SearchResultsView,
 )
 
 urlpatterns = [
+    path('home/', HomePageView.as_view(), name='home'),
+    path('search/', SearchResultsView.as_view(), name='search_results'),
     path('post/<int:pk>/delete/',
          BlogDeleteView.as_view(), name='post_delete'),
     path('post/new/', BlogCreateView.as_view(), name='post_new'),

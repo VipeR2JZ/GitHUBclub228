@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .forms import EditProfileForm
 from .models import Post
+from django.db.models import Q
 
 
 class BlogListView(ListView):
@@ -55,6 +56,21 @@ def profile(request):
     context = {'user': user}
     return render(request, 'profile.html', context)
 
+
+
+class HomePageView(TemplateView):
+    template_name = 'home.html'
+
+
+class SearchResultsView(ListView):
+    model = Post
+    template_name = 'search_results.html'
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        object_list = Post.objects.filter(Q(body__icontains=query) | Q(title__icontains=query))
+
+        return object_list
 
 
 
