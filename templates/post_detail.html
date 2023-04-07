@@ -1,7 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
- {% extends 'base.html' %}
+{% extends 'base.html' %}
 
 {% block content %}
   <div class="post-entry">
@@ -10,12 +7,22 @@
   </div>
 
   <p><a href="{% url 'post_edit' post.pk %}">+ Редактировать пост</a></p>
-  <p><a href="{% url 'post_delete' post.pk %}">+ Удалить пост</a></p>
-{% endblock content %}
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+  <p><a href="{% url 'post_delete' post.pk %}">+ Удалить пост</a>
 
-</body>
-</html>
+  <hr>
+  <h3>Комментарии:</h3>
+  <ul>
+    {% for comment in post.comment_set.all %}
+      <li>{{ comment.text }}</li>
+    {% empty %}
+      <li>Нет комментариев</li>
+    {% endfor %}
+  </ul>
+  <form method="post" action="{% url 'post_detail' post.pk %}">
+    {% csrf_token %}
+    {{ comment_form.as_p }}
+    <button type="submit">Отправить комментарий</button>
+  </form>
+{% endblock content %}
+
+

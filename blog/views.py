@@ -3,9 +3,11 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView  # но
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .forms import EditProfileForm
-from .models import Post
+from .forms import EditProfileForm, CommentForm
+from .models import Post, Comment
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
+import requests
 
 
 class BlogListView(ListView):
@@ -16,6 +18,22 @@ class BlogListView(ListView):
 class BlogDetailView(DetailView):
     model = Post
     template_name = 'post_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = CommentForm()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = self.get_object()
+            comment.author = self.request.user
+            comment.save()
+            return redirect('post_detail', pk=self.kwargs['pk'])
+        else:
+            return self.get(request, *args, **kwargs)
 
 
 
@@ -69,10 +87,8 @@ class SearchResultsView(ListView):
     def get_queryset(self):
         query = self.request.GET.get('q')
         object_list = Post.objects.filter(Q(body__icontains=query) | Q(title__icontains=query))
-
+        sorted_results = object_list.order_by('author__last_name', 'author__first_name')
         return object_list
-
-
 
 
 
